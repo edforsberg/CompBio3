@@ -1,44 +1,51 @@
-I0 = 25;
-N = 50;
-nrRuns = 100;
-timesteps = 100000;
-%I = zeros(1,timesteps);
+I0 = 10;
+N = 100;
+nrRuns = 1000;
 I = I0;
-alpha = 0.8;
-beta = 1;
-deathPoint = zeros(1,nrRuns);
+alpha = 1;
+beta = 0.8;
+deathCel = cell(1,nrRuns); 
+
 for i = 1:nrRuns
-    counter = 0;
+    IVec = []; 
     I = I0;
     while I ~= 0
-        counter = counter +1;
         I = I + Infect(alpha,N,I) - Recover(beta,N,I);
-    end
-    deathPoint(i) = counter;
-end
-plot(1:nrRuns,deathPoint)
-    
-%for i  = 2:timesteps
- %       I(i) = I(i-1) + Infect(alpha,N,I(i-1)) - Recover(beta,N,I(i-1));
-%end 
-    
-    
-function p = Infect(alpha,N,I)
-    r = rand;
-    prob = alpha*(1-I/N)*I/N;
-    if(prob<r)
-        p = 0;
-    else
-        p = 1;
-    end
+        IVec = [IVec; I]; 
+    end 
+    deathCel{i} = IVec; 
 end
 
-function p = Recover(beta,N,I)
-    r = rand;
-    prob = beta*I/N;
-    if(prob<r)
-        p = 0;
-    else
-        p = 1;
-    end
+lengths = cellfun('length', deathCel)';
+maxLength = max(lengths); 
+deathMat = zeros(nrRuns,maxLength); 
+
+for i = 1:nrRuns
+    deathMat(i,1:lengths(i)) = deathCel{i}';     
 end
+
+accDeath = zeros(1,maxLength); 
+absDeath = zeros(1,maxLength);
+
+for i = 1:maxLength    
+    nrNonZeros = sum(deathMat(:,i) ~= 0);   
+    sumI = sum(deathMat(:,i));
+    absDeath(i) = sumI/nrRuns;  
+    accDeath(i) = sumI/nrNonZeros;
+end
+
+a = 1000;
+timeVec = 1:a;
+subplot (1,2,1)
+plot(timeVec, absDeath(1:a)); 
+hold on
+plot(timeVec, accDeath(1:a)); 
+title('Average number of I');
+xlabel('t'); 
+ylabel('Average I(t)'); 
+legend('I_{abs}(t)','I_{acc}(t)'); 
+
+
+
+    
+
