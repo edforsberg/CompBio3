@@ -2,16 +2,16 @@
 
 nrRuns = 1000;
 alpha = 1;
-beta = 0.8;
-numN = 5;
-nVec = linspace(10,20,numN);
+beta = 0.78;
+numN = 10;
+nVec = linspace(10,120,numN);
 tVec = zeros(1,numN);
 
 for n = 1:numN
-    N = nVec(n);   
-    I = floor(; 
+    N = nVec(n);
     t = 0;
     for i = 1:nrRuns
+        I = floor((1- beta/alpha)*N);
         while I ~= 0
             t = t+1;
             I = I + Infect(alpha,N,I) - Recover(beta,N,I);
@@ -20,4 +20,11 @@ for n = 1:numN
     tVec(n) = t/nrRuns;
 end
 
-semilogy(nVec,tVec); 
+tAnalytical = AnalyticalText(alpha, beta, N); 
+semilogy(nVec,tVec);
+hold on
+semilogy(nVec,tVec);
+xlabel('N'); 
+ylabel('ln T_{ext}'); 
+title('Simulation results of T_{ext} as a function of N'); 
+

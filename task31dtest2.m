@@ -2,9 +2,9 @@
 
 nrRuns = 1000;
 alpha = 1;
-beta = 0.8;
+beta = 0.78;
 numN = 10;
-nVec = linspace(10,100,numN);
+nVec = linspace(10,200,numN);
 tVec = zeros(1,numN);
 
 for n = 1:numN
@@ -20,4 +20,13 @@ for n = 1:numN
     tVec(n) = t/nrRuns;
 end
 
+tAnalytical = AnalyticalText(alpha, beta, nVec);
+%tAnalytical = tAnalytical.*nVec; 
+%tAnalytical = tAnalytical*tVec(end-3)/tAnalytical(end-3); 
 semilogy(nVec,tVec);
+hold on
+semilogy(nVec,tAnalytical);
+xlabel('N'); 
+ylabel('ln T_{ext}'); 
+title('Simulation results of T_{ext} as a function of N'); 
+
