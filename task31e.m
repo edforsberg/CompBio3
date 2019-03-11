@@ -18,16 +18,17 @@ for i = 1:nrRuns
     end 
 end
 
-xVec = 0:numel(distr)-1; 
-gausDistr = normpdf(xVec,qss,8.9);
 distr = distr/sum(distr); 
+
+xVec = 1:numel(distr); 
+gausDistr = normpdf(xVec,qss,8.9);
 plot(xVec,distr); 
 hold on 
 plot(xVec,gausDistr); 
 hold on
 plot([qss qss],[0 1.2*max(distr)]); 
-legend('simulation','gausian', 'quasi strady state'); 
+legend('simulation','gausian', 'quasi steady state'); 
 title('Normalized position distribution over 1E5 runs');
-xlabel('n');
-ylabel('Probability(I = n)'); 
+xlabel('I');
+ylabel('Probability(I)'); 
 
