@@ -1,10 +1,10 @@
 %task31ctest2
 
-nrRuns = 1000;
+nrRuns = 100;
 alpha = 1;
-beta = 0.78;
+beta = 0.768;
 numN = 10;
-nVec = linspace(10,200,numN);
+nVec = linspace(10,120,numN);
 tVec = zeros(1,numN);
 
 for n = 1:numN
@@ -21,12 +21,13 @@ for n = 1:numN
 end
 
 tAnalytical = AnalyticalText(alpha, beta, nVec);
-%tAnalytical = tAnalytical.*nVec; 
-%tAnalytical = tAnalytical*tVec(end-3)/tAnalytical(end-3); 
+% tAnalytical = tAnalytical.*nVec; 
+tAnalytical = tAnalytical*tVec(end)/tAnalytical(end); 
 semilogy(nVec,tVec);
 hold on
 semilogy(nVec,tAnalytical);
 xlabel('N'); 
 ylabel('ln T_{ext}'); 
 title('Simulation results of T_{ext} as a function of N'); 
+legend('simulation', 'analytical prediction'); 
 
